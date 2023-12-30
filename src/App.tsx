@@ -27,31 +27,31 @@ function loadSampleExpenses(): Expense[] {
     },
     {
       description: "Hookers",
-      amount: 300,
+      amount: 3000,
       category: "Entertainment",
       id: uuidv4(),
     },
     {
       description: "Cocaine",
-      amount: 200,
+      amount: 2000,
       category: "Entertainment",
       id: uuidv4(),
     },
     {
       description: "Weed",
-      amount: 200,
+      amount: 100,
       category: "Entertainment",
       id: uuidv4(),
     },
     {
-      description: "LSD",
+      description: "Water",
       amount: 200,
-      category: "Entertainment",
+      category: "Utilities",
       id: uuidv4(),
     },
     {
       description: "Shrooms",
-      amount: 200,
+      amount: 20,
       category: "Groceries",
       id: uuidv4(),
     },
@@ -74,9 +74,9 @@ function App() {
 
   return (
     <>
-      <AddForm />
+      <AddForm expenses={expenses} setExpenses={setExpenses}/>
       <hr />
-      <ExpenseList expenses={expenses}/>
+      <ExpenseList expenses={expenses} setExpenses={setExpenses}/>
     </>
   );
 }
