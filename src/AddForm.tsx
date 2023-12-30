@@ -1,12 +1,16 @@
+import { Expense, ExpenseProps } from "./types.ts";
 import { FormEvent, useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-function AddForm() {
+
+function AddForm({ expenses, setExpenses }: ExpenseProps) {
   const descriptionRef = useRef<HTMLInputElement>(null);
   const amountRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLSelectElement>(null);
-  const expense = { description: "", amount: 0, category: "" };
+ 
 
   const handleSubmit = (event: FormEvent) => {
+    const expense: Expense = { description: "", amount: 0, category: "", id: uuidv4() };
     event.preventDefault();
     if (descriptionRef.current) {
       expense.description = descriptionRef.current.value;
@@ -20,7 +24,7 @@ function AddForm() {
       expense.category = categoryRef.current.value;
       categoryRef.current.value = "";
     }
-    console.log(expense);
+    setExpenses([...expenses, expense]);
   };
 
   return (
