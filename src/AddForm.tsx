@@ -8,8 +8,15 @@ import "./AddForm.css";
 function AddForm({ expenses, setExpenses }: ExpenseProps) {
   const schema: ZodType<FormExpense> = z.object({
     description: z.string().min(1),
-    amount: z.number({ invalid_type_error: "Please enter a number" }).min(0.01),
-    category: z.string().min(1, { message: "Please select a category" }),
+    amount: z
+      .number({
+        invalid_type_error:
+          "Please enter a valid number amount for this expense.",
+      })
+      .min(0.01),
+    category: z
+      .string()
+      .min(1, { message: "Please select a category for this expense." }),
   });
 
   const submitData = (formData: FormExpense) => {
@@ -42,10 +49,13 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
             type="text"
             {...register("description")}
             className="form-control"
+            aria-label="Enter the description of this expense"
           />
         </div>
         {errors.description && (
-          <p className="text-danger validation-message">{errors.description.message}</p>
+          <p className="text-danger validation-message">
+            {errors.description.message}
+          </p>
         )}
         <div className="form-group">
           <label htmlFor="amount" className="form-label">
@@ -58,10 +68,13 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
             name="amount"
             className="form-control"
             step="0.01"
+            aria-label="Enter the amount of this expense"
           />
         </div>
         {errors.amount && (
-          <p className="text-danger validation-message">{errors.amount.message}</p>
+          <p className="text-danger validation-message">
+            {errors.amount.message}
+          </p>
         )}
         <div className="form-group">
           <label htmlFor="category" className="form-label">
@@ -72,6 +85,7 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
             {...register("category")}
             name="category"
             className="form-control drop-down"
+            aria-label="Select the category of this expense"
           >
             <option value="">Select category</option>
             <option value="Groceries">Groceries</option>
@@ -80,7 +94,9 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
           </select>
         </div>
         {errors.category && (
-          <p className="text-danger validation-message">{errors.category.message}</p>
+          <p className="text-danger validation-message">
+            {errors.category.message}
+          </p>
         )}
         <button className="btn btn-primary" type="submit">
           Submit
