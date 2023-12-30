@@ -6,26 +6,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import "./AddForm.css";
 
 function AddForm({ expenses, setExpenses }: ExpenseProps) {
+  
   const schema: ZodType<FormExpense> = z.object({
-    description: z.string().min(1),
+    description: z.string().min(3, {message: "Description should be at least three characters."}),
     amount: z
       .number({
         invalid_type_error:
-          "Please enter a valid number amount for this expense.",
+          "Amount is required.",
       })
       .min(0.01),
     category: z
       .string()
-      .min(1, { message: "Please select a category for this expense." }),
+      .min(1, { message: "Category is required." }),
   });
 
   const submitData = (formData: FormExpense) => {
+    // called after Zod has validated the input
     // id is part of the Expense type, but not the FormExpense type so we add it here
     const expense: Expense = { ...formData, id: uuidv4() };
     setExpenses([...expenses, expense]);
     reset(); // blank the form fields
   };
 
+  // plumbing for the Zod form validation
   const {
     register,
     handleSubmit,
