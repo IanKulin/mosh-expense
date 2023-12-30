@@ -4,23 +4,19 @@ import { v4 as uuidv4 } from "uuid";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-
 function AddForm({ expenses, setExpenses }: ExpenseProps) {
   const schema: ZodType<FormExpense> = z.object({
     description: z.string().min(1),
-    amount: z.number().min(0.01),
-    category: z.string().min(1),
+    amount: z.number({ invalid_type_error: "Please enter a number" }).min(0.01),
+    category: z.string().min(1, { message: "Please select a category" }),
   });
 
-
-  const submitData = (data: FormExpense) => {
-    // add the uuid
-    const expense: Expense = { ...data, id: uuidv4() };
-    console.log(expense);
+  const submitData = (formData: FormExpense) => {
+    // id is part of the Expense type, but not the FormExpense type so we add it here
+    const expense: Expense = { ...formData, id: uuidv4() };
     setExpenses([...expenses, expense]);
-    reset(); // reset the form fields
+    reset(); // blank the form fields
   };
-
 
   const {
     register,
@@ -31,9 +27,10 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
     resolver: zodResolver(schema),
   });
 
-
   return (
     <div>
+      {/* handleSubmit is the Zod form validation, then it calls submitData 
+          if successful */}
       <form onSubmit={handleSubmit(submitData)}>
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
@@ -64,7 +61,6 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
           {errors.amount && (
             <p className="text-danger">{errors.amount.message}</p>
           )}
-          {errors.id && <p className="text-danger">{errors.id.message}</p>}
         </div>
         <div className="mb-3">
           <label htmlFor="category" className="form-label">
@@ -81,6 +77,9 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
             <option value="Utilities">Utilities</option>
             <option value="Entertainment">Entertainment</option>
           </select>
+          {errors.category && (
+            <p className="text-danger">{errors.category.message}</p>
+          )}
         </div>
         <button className="btn btn-primary" type="submit">
           Submit
@@ -89,6 +88,5 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
     </div>
   );
 }
-
 
 export default AddForm;
