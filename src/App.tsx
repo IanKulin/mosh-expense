@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import AddForm from "./AddForm";
 import ExpenseList from "./ExpenseList";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
 
 interface Expense {
   description: string;
@@ -15,68 +14,47 @@ function loadSampleExpenses(): Expense[] {
   return [
     {
       description: "Two minute noodles",
-      amount: 1,
+      amount: 1.98,
       category: "Groceries",
       id: uuidv4(),
     },
     {
       description: "Power bill",
-      amount: 2,
+      amount: 223.64,
       category: "Utilities",
       id: uuidv4(),
     },
     {
-      description: "Hookers",
-      amount: 3000,
-      category: "Entertainment",
-      id: uuidv4(),
-    },
-    {
-      description: "Cocaine",
-      amount: 2000,
-      category: "Entertainment",
-      id: uuidv4(),
-    },
-    {
-      description: "Weed",
-      amount: 100,
-      category: "Entertainment",
-      id: uuidv4(),
-    },
-    {
-      description: "Water",
-      amount: 200,
-      category: "Utilities",
-      id: uuidv4(),
-    },
-    {
-      description: "Shrooms",
-      amount: 20,
-      category: "Groceries",
-      id: uuidv4(),
-    },
-    {
-      description: "Ayahuasca",
-      amount: 200,
+      description: "Mirror ball hire",
+      amount: 200.50,
       category: "Entertainment",
       id: uuidv4(),
     },
   ];
 }
 
-
 function App() {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>(() => {
+    // Try to load expenses from local storage
+    const savedExpenses = localStorage.getItem('mosh-expense');
+    if (savedExpenses) {
+      return JSON.parse(savedExpenses);
+    } else {
+      // If there are no saved expenses, load the sample expenses
+      return loadSampleExpenses();
+    }
+  });
 
   useEffect(() => {
-    setExpenses(loadSampleExpenses());
-  }, []);
+    // Save expenses to local storage whenever they change
+    localStorage.setItem('mosh-expense', JSON.stringify(expenses));
+  }, [expenses]);
 
   return (
     <>
-      <AddForm expenses={expenses} setExpenses={setExpenses}/>
+      <AddForm expenses={expenses} setExpenses={setExpenses} />
       <hr />
-      <ExpenseList expenses={expenses} setExpenses={setExpenses}/>
+      <ExpenseList expenses={expenses} setExpenses={setExpenses} />
     </>
   );
 }

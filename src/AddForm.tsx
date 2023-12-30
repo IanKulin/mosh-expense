@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import "./AddForm.css";
 
 function AddForm({ expenses, setExpenses }: ExpenseProps) {
   const schema: ZodType<FormExpense> = z.object({
@@ -32,7 +33,7 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
       {/* handleSubmit is the Zod form validation, then it calls submitData 
           if successful */}
       <form onSubmit={handleSubmit(submitData)}>
-        <div className="mb-3">
+        <div className="form-group">
           <label htmlFor="description" className="form-label">
             Description:{" "}
           </label>
@@ -42,11 +43,11 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
             {...register("description")}
             className="form-control"
           />
-          {errors.description && (
-            <p className="text-danger">{errors.description.message}</p>
-          )}
         </div>
-        <div className="mb-3">
+        {errors.description && (
+          <p className="text-danger validation-message">{errors.description.message}</p>
+        )}
+        <div className="form-group">
           <label htmlFor="amount" className="form-label">
             Amount:{" "}
           </label>
@@ -58,11 +59,11 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
             className="form-control"
             step="0.01"
           />
-          {errors.amount && (
-            <p className="text-danger">{errors.amount.message}</p>
-          )}
         </div>
-        <div className="mb-3">
+        {errors.amount && (
+          <p className="text-danger validation-message">{errors.amount.message}</p>
+        )}
+        <div className="form-group">
           <label htmlFor="category" className="form-label">
             Category:{" "}
           </label>
@@ -70,17 +71,17 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
             id="category"
             {...register("category")}
             name="category"
-            className="form-control"
+            className="form-control drop-down"
           >
             <option value="">Select category</option>
             <option value="Groceries">Groceries</option>
             <option value="Utilities">Utilities</option>
             <option value="Entertainment">Entertainment</option>
           </select>
-          {errors.category && (
-            <p className="text-danger">{errors.category.message}</p>
-          )}
         </div>
+        {errors.category && (
+          <p className="text-danger validation-message">{errors.category.message}</p>
+        )}
         <button className="btn btn-primary" type="submit">
           Submit
         </button>
