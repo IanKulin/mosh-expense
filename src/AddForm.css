@@ -9,6 +9,7 @@
 }
 
 .validation-message {
+  /* a little bit more subtle, and right aligned */
   font-size: 0.8em;
   text-align: right;
   padding-right: 10px;
