@@ -1,3 +1,14 @@
 th, td, div {
     padding: 10px;
 }
+
+table {
+
+    width: 90%;
+    margin: 0 auto;
+}
+
+.category-selector {
+    width: 90%;
+    margin: 0 auto;
+}
