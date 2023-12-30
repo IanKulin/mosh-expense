@@ -1,46 +1,53 @@
-import { Expense, ExpenseProps } from "./types.ts";
-import { FormEvent, useRef } from "react";
+import { Expense, FormExpense, ExpenseProps } from "./types.ts";
+import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-import {z } from "zod";
+import { z, ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 
 function AddForm({ expenses, setExpenses }: ExpenseProps) {
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const amountRef = useRef<HTMLInputElement>(null);
-  const categoryRef = useRef<HTMLSelectElement>(null);
- 
+  const schema: ZodType<FormExpense> = z.object({
+    description: z.string().min(1),
+    amount: z.number().min(0.01),
+    category: z.string().min(1),
+  });
 
-  const handleSubmit = (event: FormEvent) => {
-    const expense: Expense = { description: "", amount: 0, category: "", id: uuidv4() };
-    event.preventDefault();
-    if (descriptionRef.current) {
-      expense.description = descriptionRef.current.value;
-      descriptionRef.current.value = "";
-    }
-    if (amountRef.current) {
-      expense.amount = Number(amountRef.current.value);
-      amountRef.current.value = "";
-    }
-    if (categoryRef.current) {
-      expense.category = categoryRef.current.value;
-      categoryRef.current.value = "";
-    }
+
+  const submitData = (data: FormExpense) => {
+    // add the uuid
+    const expense: Expense = { ...data, id: uuidv4() };
+    console.log(expense);
     setExpenses([...expenses, expense]);
+    reset(); // reset the form fields
   };
+
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Expense>({
+    resolver: zodResolver(schema),
+  });
+
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(submitData)}>
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
             Description:{" "}
           </label>
           <input
             id="description"
-            ref={descriptionRef}
             type="text"
-            name="description"
+            {...register("description")}
             className="form-control"
           />
+          {errors.description && (
+            <p className="text-danger">{errors.description.message}</p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="amount" className="form-label">
@@ -48,12 +55,16 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
           </label>
           <input
             id="amount"
-            ref={amountRef}
             type="number"
+            {...register("amount", { valueAsNumber: true })}
             name="amount"
             className="form-control"
             step="0.01"
           />
+          {errors.amount && (
+            <p className="text-danger">{errors.amount.message}</p>
+          )}
+          {errors.id && <p className="text-danger">{errors.id.message}</p>}
         </div>
         <div className="mb-3">
           <label htmlFor="category" className="form-label">
@@ -61,7 +72,7 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
           </label>
           <select
             id="category"
-            ref={categoryRef}
+            {...register("category")}
             name="category"
             className="form-control"
           >
@@ -78,5 +89,6 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
     </div>
   );
 }
+
 
 export default AddForm;

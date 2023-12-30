@@ -53,7 +53,7 @@ function ExpenseList({ expenses, setExpenses }: ExpenseProps) {
         </thead>
         <tbody>
           {filteredExpenses.map((expense) => (
-            <tr key={expense.description}>
+            <tr key={expense.id}>
               <td>{expense.description}</td>
             <td style={{ textAlign: "right" }}>{expense.amount.toFixed(2)}</td>
               <td>{expense.category}</td>
