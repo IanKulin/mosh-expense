@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
 import AddForm from "./AddForm";
+import { Expense } from "./types.ts";
 import ExpenseList from "./ExpenseList";
 import { v4 as uuidv4 } from "uuid";
 
-interface Expense {
-  description: string;
-  amount: number;
-  category: string;
-  id: string;
-}
 
 function loadSampleExpenses(): Expense[] {
   return [
