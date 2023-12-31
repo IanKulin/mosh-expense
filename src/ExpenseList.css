@@ -13,7 +13,7 @@ table {
     margin: 0 auto;
 }
 
-.centred-td, th {
+td, th {
     text-align: center;
     vertical-align: middle;
 }
