@@ -2,10 +2,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1em;
+}
+
+.form-group label {
+  margin-right: 1em;
+}
+
+.form-group input,
+.form-group select {
+  flex-grow: 1;
 }
 
 .form-label {
-  margin-right: 10px;
+  width: 150px; /* Adjust this value based on your largest label */
+  text-align: right;
+  margin-right: 1em;
 }
 
 .validation-message {
@@ -13,6 +25,10 @@
   font-size: 0.8em;
   text-align: right;
   padding-right: 10px;
+}
+
+.right-align {
+  text-align: right;
 }
 
 .drop-down {

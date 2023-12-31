@@ -6,18 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import "./AddForm.css";
 
 function AddForm({ expenses, setExpenses }: ExpenseProps) {
-  
   const schema: ZodType<FormExpense> = z.object({
-    description: z.string().min(3, {message: "Description should be at least three characters."}),
+    description: z
+      .string()
+      .min(3, { message: "Description should be at least three characters." }),
     amount: z
       .number({
-        invalid_type_error:
-          "Amount is required.",
+        invalid_type_error: "Amount is required.",
       })
       .min(0.01),
-    category: z
-      .string()
-      .min(1, { message: "Category is required." }),
+    category: z.string().min(1, { message: "Category is required." }),
   });
 
   const submitData = (formData: FormExpense) => {
@@ -45,7 +43,7 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
       <form onSubmit={handleSubmit(submitData)}>
         <div className="form-group">
           <label htmlFor="description" className="form-label">
-            Description:{" "}
+            Description:
           </label>
           <input
             id="description"
@@ -101,9 +99,11 @@ function AddForm({ expenses, setExpenses }: ExpenseProps) {
             {errors.category.message}
           </p>
         )}
-        <button className="btn btn-primary" type="submit">
-          Submit
-        </button>
+        <div className="right-align">
+          <button className="btn btn-primary" type="submit">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -46,11 +46,11 @@ function App() {
   }, [expenses]);
 
   return (
-    <>
+    <div className="container">
       <AddForm expenses={expenses} setExpenses={setExpenses} />
       <hr />
       <ExpenseList expenses={expenses} setExpenses={setExpenses} />
-    </>
+    </div>
   );
 }
 

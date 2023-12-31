@@ -30,7 +30,7 @@ function ExpenseList({ expenses, setExpenses }: ExpenseProps) {
 
   return (
     <>
-      <div className="mb-3 category-selector">
+      <div className="category-selector">
         <label htmlFor="category" className="form-label">
           Category:{" "}
         </label>
