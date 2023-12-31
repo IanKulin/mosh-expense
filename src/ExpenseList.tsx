@@ -1,5 +1,7 @@
 import "./ExpenseList.css";
 import { ExpenseProps } from "./types.ts";
+import TDCurrency from "./TDCurrency.tsx";
+import TDDeleteButton from "./TDDeleteButton.tsx";
 import { useState } from "react";
 
 function ExpenseList({ expenses, setExpenses }: ExpenseProps) {
@@ -17,6 +19,10 @@ function ExpenseList({ expenses, setExpenses }: ExpenseProps) {
     (expense) =>
       selectedCategory === "All" || expense.category === selectedCategory
   );
+
+  const filteredTotal = filteredExpenses.reduce((total, expense) => {
+    return total + expense.amount;
+  }, 0);
 
   function handleDelete(id: string) {
     setExpenses(expenses.filter((expense) => expense.id !== id));
@@ -53,40 +59,17 @@ function ExpenseList({ expenses, setExpenses }: ExpenseProps) {
         <tbody>
           {filteredExpenses.map((expense) => (
             <tr key={expense.id}>
-              <td className="centred-td">{expense.description}</td>
-              <td style={{ textAlign: "right" }}>
-                $
-                {expense.amount.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </td>
-              <td className="centred-td">{expense.category}</td>
-              <td className="centred-td">
-                <button
-                  className="btn btn-outline-danger"
-                  onClick={() => handleDelete(expense.id)}
-                >
-                  Delete
-                </button>
-              </td>
+              <td>{expense.description}</td>
+              <TDCurrency>{expense.amount}</TDCurrency>
+              <td>{expense.category}</td>
+              <TDDeleteButton onClick={handleDelete} id={expense.id}/>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
             <td></td>
-            <td style={{ textAlign: "right", fontWeight: "bold" }}>
-              $
-              {filteredExpenses
-                .reduce((total, expense) => {
-                  return total + expense.amount;
-                }, 0)
-                .toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-            </td>
+            <TDCurrency fontWeight="bold">{filteredTotal}</TDCurrency>
             <td colSpan={2}></td>
           </tr>
         </tfoot>
