@@ -1,11 +1,9 @@
 import "./ExpenseList.css";
 import { ExpenseProps } from "./types.ts";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 function ExpenseList({ expenses, setExpenses }: ExpenseProps) {
   if (expenses.length === 0) return null;
-
-  const categoryRef = useRef<HTMLSelectElement>(null);
 
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -32,7 +30,6 @@ function ExpenseList({ expenses, setExpenses }: ExpenseProps) {
         </label>
         <select
           id="category"
-          ref={categoryRef}
           name="category"
           className="form-control drop-down"
           onChange={handleCategoryChange}
